@@ -103,6 +103,10 @@ variable "data_ansible_playbook" {
   default = "data.yml"
 }
 
+variable "ansible_config" {
+  default = "./ansible.cfg"
+}
+
 variable "device_names" {
   default = {
     data = "h"
