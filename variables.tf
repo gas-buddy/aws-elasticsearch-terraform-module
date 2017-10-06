@@ -82,9 +82,7 @@ variable "tags" {
   default = {}
 }
 
-variable "iam_instance_profile" {
-  default = ""
-}
+variable "iam_instance_profile" {}
 
 variable "ssh_key_file" {
   type = "string"
