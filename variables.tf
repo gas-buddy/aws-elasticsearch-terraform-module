@@ -32,6 +32,7 @@ variable "cluster_name" {
 }
 
 variable "additional_security_group_ids" {
+  description = "Additional groups to assign to all nodes in the search cluster"
   default = []
 }
 
