@@ -100,7 +100,7 @@ variable "master_ansible_playbook" {
 
 variable "data_ansible_playbook" {
   type = "string"
-  default = "master.yml"
+  default = "data.yml"
 }
 
 variable "device_names" {
