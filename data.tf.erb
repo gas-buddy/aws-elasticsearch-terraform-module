@@ -14,7 +14,7 @@ resource "aws_instance" "data_<%= az %>" {
   subnet_id = "${lookup(var.subnet_ids, "<%= az %>", "")}"
   monitoring = "${var.data_monitoring}"
 
-  tags = "${merge(var.tags, map("Name", format("elasticsearch-data-%s-<%= az %>-%d", var.cluster_name, count.index+1)))}"
+  tags = "${merge(var.tags, map("Name", format("elasticsearch-data-%s-<%= az %>-%d", var.cluster_name, count.index+1), "Job", "elasticsearch-data"))}"
 }
 
 # This is necessary so that we can reference the IP of the instance we've just created when running ansible
