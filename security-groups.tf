@@ -26,6 +26,8 @@ resource "aws_security_group_rule" "elasticsearch_master_user_9200" {
 
 # Used Defined Ingress CIDRs
 resource "aws_security_group_rule" "elasticsearch_master_user_cidrs_9200" {
+  count = "${length(var.source_cidrs) > 0 ? 1: 0}"
+
   security_group_id = "${aws_security_group.elasticsearch_master.id}"
   cidr_blocks = ["${var.source_cidrs}"]
   type = "ingress"
