@@ -118,6 +118,10 @@ variable "region" {
   default = "us-east-1"
 }
 
+variable "ca_passphrase_file" {
+  description = "The file containing the certificate authority key passphrase"
+}
+
 # Chef Provisioner...
 # variable "chef_user_name" {}
 # variable "chef_client_key_file" {}
