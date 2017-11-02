@@ -1,3 +1,8 @@
+variable "env" {
+  description = "The environment name"
+  type = "string"
+}
+
 variable "data_nodes_per_subnet" {
   default = 1
 }
