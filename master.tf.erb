@@ -23,7 +23,7 @@ resource "null_resource" "ansible_master_<%= az %>" {
   count = "${contains(keys(var.subnet_ids), "<%= az %>") ? 1 : 0}"
 
   provisioner "local-exec" {
-    command = "sleep 120; ANSIBLE_CONFIG=${var.ansible_config} ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_user} --private-key ${var.ssh_key_file} -e 'cluster_name=${var.cluster_name}' -e 'region=${var.region}' -e 'terraform_node_name=elasticsearch-master-${var.cluster_name}-<%= az %>' -i '${element(aws_instance.master_<%= az %>.*.private_ip, count.index)},' ${var.master_ansible_playbook}"
+    command = "sleep 120; ANSIBLE_CONFIG=${var.ansible_config} ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_user} --private-key ${var.ssh_key_file} -e 'cluster_name=${var.cluster_name}' -e 'region=${var.region}' -e 'node_name=elasticsearch-master-${var.cluster_name}-<%= az %>' -i '${element(aws_instance.master_<%= az %>.*.private_ip, count.index)},' ${var.master_ansible_playbook}"
   }
 }
 <% end -%>
