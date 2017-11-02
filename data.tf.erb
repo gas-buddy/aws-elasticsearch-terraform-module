@@ -23,7 +23,7 @@ resource "null_resource" "ansible_data_<%= az %>" {
   count = "${contains(keys(var.subnet_ids), "<%= az %>") ? (var.data_nodes_per_subnet) : 0}"
 
   provisioner "local-exec" {
-    command = "sleep 120; CA_PASSPHRASE=$(cat \"${var.ca_passphrase_file}\") ANSIBLE_CONFIG=${var.ansible_config} ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_user} --private-key ${var.ssh_key_file} -e 'cluster_name=${var.cluster_name}' -e 'region=${var.region}' -e 'node_name=elasticsearch-data-${var.cluster_name}-<%= az %>' -e 'env=${var.env}' -i '${element(aws_instance.data_<%= az %>.*.private_ip, count.index)},' ${var.data_ansible_playbook}"
+    command = "sleep 120; CA_PASSPHRASE=$(cat \"${var.ca_passphrase_file}\") ANSIBLE_CONFIG=${var.ansible_config} ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_user} --private-key ${var.ssh_key_file} -e 'cluster_name=${var.cluster_name}' -e 'region=${var.region}' -e 'node_name=elasticsearch-data-${var.cluster_name}-<%= az %>' -e 'env=${var.env}' --vault-password-file=~/.ansible/vault-password -i '${element(aws_instance.data_<%= az %>.*.private_ip, count.index)},' ${var.data_ansible_playbook}"
   }
 }
 <% end -%>
