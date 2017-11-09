@@ -98,18 +98,8 @@ variable "ssh_user" {
   default = "ubuntu"
 }
 
-variable "master_ansible_playbook" {
+variable "ansible_playbook" {
   type = "string"
-  default = "master.yml"
-}
-
-variable "data_ansible_playbook" {
-  type = "string"
-  default = "data.yml"
-}
-
-variable "ansible_config" {
-  default = "./ansible.cfg"
 }
 
 variable "device_names" {
