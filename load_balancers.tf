@@ -23,7 +23,7 @@ resource "aws_elb" "masters" {
   instances = [
     "${aws_instance.master_a.id}",
     "${aws_instance.master_b.id}",
-    "${aws_instance.master_c.id}"
+    "${aws_spot_instance_request.master_c.spot_instance_id}"
   ]
 }
 
