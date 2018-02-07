@@ -24,6 +24,17 @@ resource "aws_security_group_rule" "elasticsearch_master_user_9200" {
   to_port = 9200
 }
 
+# Used Defined Ingress Groups
+resource "aws_security_group_rule" "elasticsearch_master_elb_9200" {
+  security_group_id = "${aws_security_group.elasticsearch_master.id}"
+
+  source_security_group_id = "${aws_security_group.masters_elb.id}"
+  type = "ingress"
+  protocol = "tcp"
+  from_port = 9200
+  to_port = 9200
+}
+
 # Used Defined Ingress CIDRs
 resource "aws_security_group_rule" "elasticsearch_master_user_cidrs_9200" {
   count = "${length(var.source_cidrs) > 0 ? 1: 0}"
