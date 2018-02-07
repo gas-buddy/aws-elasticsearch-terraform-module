@@ -59,8 +59,16 @@ variable "master_instance_type" {
   default = "m1.small"
 }
 
+variable "master_instance_spot_price" {
+  default = "0.44"
+}
+
 variable "data_instance_type" {
   default = "i3.xlarge"
+}
+
+variable "data_instance_spot_price" {
+  default = "0.32"
 }
 
 variable "hvm_ami" {

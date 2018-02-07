@@ -11,5 +11,5 @@ output "master_b_ip" {
 }
 
 output "master_c_ip" {
-  value = "${aws_instance.master_c.*.private_ip}"
+  value = "${aws_spot_instance_request.master_c.*.private_ip}"
 }
