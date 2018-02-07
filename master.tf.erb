@@ -5,7 +5,7 @@ resource "aws_instance" "master_<%= az %>" {
   count = "${contains(keys(var.subnet_ids), "<%= az %>") ? 1 : 0}"
 
   instance_type = "${var.master_instance_type}"
-  ami = "${var.pv_ami}"
+  ami = "${var.hvm_ami}"
   key_name = "${var.key_name}"
   iam_instance_profile = "${var.iam_instance_profile}"
   vpc_security_group_ids = [
