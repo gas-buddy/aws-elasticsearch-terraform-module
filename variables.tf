@@ -1,6 +1,6 @@
 variable "env" {
   description = "The environment name"
-  type = "string"
+  type        = string
 }
 
 variable "data_nodes_per_subnet" {
@@ -9,17 +9,17 @@ variable "data_nodes_per_subnet" {
 
 variable "source_security_group_ids" {
   description = "A list of security groups (by ID) that are allowed to access port 9200 on the ES masters"
-  type = list
+  type        = list(string)
 }
 
 variable "data_storage_gb" {
   description = "GB of index data storage for each data node."
-  default = 250
+  default     = 250
 }
 
 variable "logs_storage_gb" {
   description = "GB of index data storage for each data node."
-  default = 50
+  default     = 50
 }
 
 variable "storage_type" {
@@ -28,8 +28,8 @@ variable "storage_type" {
 
 variable "source_cidrs" {
   description = "(Optional) CIDR ranges to allow accesss from"
-  type = "list"
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "cluster_name" {
@@ -38,19 +38,19 @@ variable "cluster_name" {
 
 variable "additional_security_group_ids" {
   description = "Additional groups to assign to all nodes in the search cluster"
-  default = []
+  default     = []
 }
 
 variable "key_name" {
-  type = "string"
+  type = string
 }
 
 variable "subnet_ids" {
-  type = "map"
+  type = map(string)
 }
 
 variable "vpc_id" {
-  type = "string"
+  type = string
 }
 
 # Security Group IDs
@@ -73,28 +73,29 @@ variable "pv_ami" {
 
 variable "data_monitoring" {
   description = "Detailed monitoring for data nodes (costs extra)"
-  default = false
+  default     = false
 }
 
 variable "master_monitoring" {
   description = "Detailed monitoring for master nodes (costs extra)"
-  default = false
+  default     = false
 }
 
 variable "tags" {
-  type = "map"
+  type        = map(string)
   description = "Additional tags to include with the instance"
-  default = {}
+  default     = {}
 }
 
-variable "iam_instance_profile_name" {}
+variable "iam_instance_profile_name" {
+}
 
 variable "ssh_key_file" {
-  type = "string"
+  type = string
 }
 
 variable "ssh_user" {
-  type = "string"
+  type    = string
   default = "ubuntu"
 }
 
@@ -110,7 +111,7 @@ variable "region" {
 }
 
 variable "monitor_security_group_id" {
-  type = "string"
+  type = string
 }
 
 # Chef Provisioner...
