@@ -4,8 +4,8 @@
 
 resource "aws_ebs_volume" "data_node_<%= type %>_<%= az %>" {
   availability_zone = "${var.region}<%= az %>"
-  count             = "${contains(keys(var.subnet_ids), "<%= az %>") ? var.data_nodes_per_subnet : 0}"
-  size              = "${var.<%= type %>_storage_gb}"
+  count             = contains(keys(var.subnet_ids), "<%= az %>") ? var.data_nodes_per_subnet : 0
+  size              = var.<%= type %>_storage_gb
   type              = var.storage_type
 
   tags = {
@@ -16,7 +16,7 @@ resource "aws_ebs_volume" "data_node_<%= type %>_<%= az %>" {
 
 resource "aws_volume_attachment" "data_node_<%= type %>_<%= az %>" {
   device_name = "/dev/xvd${var.device_names["<%= type %>"]}"
-  count       = "${contains(keys(var.subnet_ids), "<%= az %>") ? var.data_nodes_per_subnet : 0}"
+  count       = contains(keys(var.subnet_ids), "<%= az %>") ? var.data_nodes_per_subnet : 0
   volume_id   = element(aws_ebs_volume.data_node_<%= type %>_<%= az %>.*.id, count.index)
   instance_id = element(aws_instance.data_<%= az %>.*.id, (count.index / var.data_nodes_per_subnet))
 }
