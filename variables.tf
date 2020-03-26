@@ -9,7 +9,7 @@ variable "data_nodes_per_subnet" {
 
 variable "source_security_group_ids" {
   description = "A list of security groups (by ID) that are allowed to access port 9200 on the ES masters"
-  type = "list"
+  type = list
 }
 
 variable "data_storage_gb" {
@@ -64,11 +64,11 @@ variable "data_instance_type" {
 }
 
 variable "hvm_ami" {
-  default = "ami-d651b8ac" # ami-d651b8ac  16.04 LTS  hvm:ebs-ssd 20170919
+  default = "ami-024582e76075564db" # hvm-ssd/ubuntu-bionic-18.04-amd64-server-20190911
 }
 
 variable "pv_ami" {
-  default = "ami-3d55bc47" # ami-3d55bc47  16.04 LTS  ebs-ssd 20170919
+  default = "" # No longer used
 }
 
 variable "data_monitoring" {
@@ -87,7 +87,7 @@ variable "tags" {
   default = {}
 }
 
-variable "iam_instance_profile" {}
+variable "iam_instance_profile_name" {}
 
 variable "ssh_key_file" {
   type = "string"
@@ -96,10 +96,6 @@ variable "ssh_key_file" {
 variable "ssh_user" {
   type = "string"
   default = "ubuntu"
-}
-
-variable "ansible_playbook" {
-  type = "string"
 }
 
 variable "device_names" {
@@ -113,8 +109,8 @@ variable "region" {
   default = "us-east-1"
 }
 
-variable "ca_passphrase_file" {
-  description = "The file containing the certificate authority key passphrase"
+variable "monitor_security_group_id" {
+  type = "string"
 }
 
 # Chef Provisioner...

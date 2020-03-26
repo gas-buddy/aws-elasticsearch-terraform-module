@@ -2,23 +2,23 @@
 <% %w(a b c d e).each do |az| -%>
   <% %w(data logs).each do |type| -%>
 
-resource "aws_ebs_volume" "<%= type %>_<%= az %>" {
+resource "aws_ebs_volume" "data_node_<%= type %>_<%= az %>" {
   availability_zone = "${var.region}<%= az %>"
   count             = "${contains(keys(var.subnet_ids), "<%= az %>") ? var.data_nodes_per_subnet : 0}"
   size              = "${var.<%= type %>_storage_gb}"
-  type              = "${var.storage_type}"
+  type              = var.storage_type
 
   tags = {
-    Name = "${format("elasticsearch-data_<%= az %>-<%= type %>-%s-%d", var.cluster_name, count.index + 1)}"
-    cluster = "${var.cluster_name}"
+    Name = format("elasticsearch-data_node_<%= az %>-<%= type %>_%s-%d", var.cluster_name, count.index + 1)
+    cluster = var.cluster_name
   }
 }
 
-resource "aws_volume_attachment" "<%= type %>_<%= az %>" {
+resource "aws_volume_attachment" "data_node_<%= type %>_<%= az %>" {
   device_name = "/dev/xvd${var.device_names["<%= type %>"]}"
   count       = "${contains(keys(var.subnet_ids), "<%= az %>") ? var.data_nodes_per_subnet : 0}"
-  volume_id   = "${element(aws_ebs_volume.<%= type %>_<%= az %>.*.id, count.index)}"
-  instance_id = "${element(aws_instance.data_<%= az %>.*.id, (count.index / var.data_nodes_per_subnet))}"
+  volume_id   = element(aws_ebs_volume.data_node_<%= type %>_<%= az %>.*.id, count.index)
+  instance_id = element(aws_instance.data_<%= az %>.*.id, (count.index / var.data_nodes_per_subnet))
 }
   <% end -%>
 <% end -%>

@@ -4,26 +4,20 @@
 resource "aws_instance" "master_<%= az %>" {
   count = "${contains(keys(var.subnet_ids), "<%= az %>") ? 1 : 0}"
 
-  instance_type = "${var.master_instance_type}"
-  ami = "${var.hvm_ami}"
-  key_name = "${var.key_name}"
-  iam_instance_profile = "${var.iam_instance_profile}"
-  vpc_security_group_ids = [
-    "${concat(var.additional_security_group_ids, list("${aws_security_group.elasticsearch_master.id}"))}"
-  ]
-  subnet_id = "${lookup(var.subnet_ids, "<%= az %>", "")}"
-  monitoring = "${var.master_monitoring}"
+  instance_type = var.master_instance_type
+  ami = var.hvm_ami
+  key_name = var.key_name
+  iam_instance_profile = var.iam_instance_profile_name
+  vpc_security_group_ids = concat(var.additional_security_group_ids, list(aws_security_group.elasticsearch_master.id))
+  subnet_id = lookup(var.subnet_ids, "<%= az %>", "")
+  monitoring = var.master_monitoring
 
-  tags = "${merge(var.tags, map("Name", "elasticsearch-master-${var.cluster_name}-<%= az %>", "Job", "elasticsearch-master"))}"
-}
+  tags = merge(var.tags, map("Name", "elasticsearch-master-${var.cluster_name}-<%= az %>", "Job", "elasticsearch-master"))
 
-# This is necessary so that we can reference the IP of the instance we've just created when running ansible
-
-resource "null_resource" "ansible_master_<%= az %>" {
-  count = "${contains(keys(var.subnet_ids), "<%= az %>") ? 1 : 0}"
-
-  provisioner "local-exec" {
-    command = "sleep 120; CA_PASSPHRASE=$(cat \"${var.ca_passphrase_file}\") ANSIBLE_CONFIG=${var.ansible_playbook}/ansible.cfg ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_user} --private-key ${var.ssh_key_file} -e 'cluster_name=${var.cluster_name}' -e 'region=${var.region}' -e 'node_name=elasticsearch-master-${var.cluster_name}-<%= az %>' -e 'env=${var.env}' --vault-password-file=~/.ansible/vault-password -i '${element(aws_instance.master_<%= az %>.*.private_ip, count.index)},' ${var.ansible_playbook}/playbooks/elasticsearch-master.yml"
+  lifecycle {
+    ignore_changes = [
+      ami
+    ]
   }
 }
 <% end -%>
