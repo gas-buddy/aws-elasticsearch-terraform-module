@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "elasticsearch_master_self_9300" {
   self = true
 }
 
-# Rule to allow monitoring
+# Rules to allow monitoring
 resource "aws_security_group_rule" "monitoring_elasticsearch_master_9200" {
   security_group_id = "${aws_security_group.elasticsearch_master.id}"
   type = "ingress"
@@ -32,6 +32,16 @@ resource "aws_security_group_rule" "monitoring_elasticsearch_master_9200" {
   to_port = 9200
   source_security_group_id = "${var.monitor_security_group_id}"
   description = "Monitoring"
+}
+
+resource "aws_security_group_rule" "monitoring_elasticsearch_data_9200" {
+  security_group_id        = aws_security_group.elasticsearch_data.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  from_port                = 9200
+  to_port                  = 9200
+  source_security_group_id = var.monitor_security_group_id
+  description              = "Monitoring"
 }
 
 # Egress Rule
